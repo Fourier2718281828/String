@@ -7,12 +7,7 @@ namespace Zymovets01_String
 {
 	inline std::ostream& operator<< (std::ostream& o, const String& s)
 	{
-		for (size_t i = 0u; i < s.size(); ++i)
-		{
-			o << s[i];
-		}
-
-		return o;
+		return o << static_cast<const char*>(s);
 	}
 }
 

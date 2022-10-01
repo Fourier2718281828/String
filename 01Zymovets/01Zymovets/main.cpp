@@ -13,6 +13,13 @@ int main(void)
 {
 	String s = "123123";
 	cout << (string("asd") + s + "asd") << endl;
+	cout << string("asda") + String("sada") + "asdas" << endl;
+	string a = s;
+
+	s = "asda";
+	s += "asda";
+	s += string("asda");
+	s + 'a';
 
 	std::vector<String> toSort 
 	{
@@ -25,7 +32,7 @@ int main(void)
 		"baddu"
 	};
 
-	std::sort(toSort.begin(), toSort.end(), [](const String& a, const String& b) { return a < b; });
+	std::sort(toSort.begin(), toSort.end(), std::less<String>());
 
 	for (size_t i = 0u; i < toSort.size(); ++i)
 	{
