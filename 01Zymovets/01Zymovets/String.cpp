@@ -1,6 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "String.h"
 
+#ifndef NDEBUG
+#include "StringPrinter.h"
+#include <iostream>
+#endif // !NDEBUG
+
+#define PRINT(s) \
+_STD cout << s << _STD endl;
+
+
 namespace Zymovets01_String
 {
 	String::String(const size_t size) :
@@ -19,30 +28,48 @@ namespace Zymovets01_String
 		_size(0u),
 		_chrs(new String::_Char_t[1]{'\0'})
 	{
+#ifndef NDEBUG
+		PRINT("### String()")
+#endif // !NDEBUG
 	}
 
 	String::String(const String::_Char_t* chrs) :
 		String(strlen(chrs))
 	{
 		copy_elems_from(chrs);
+
+#ifndef NDEBUG
+		PRINT("### String(const String::_Char_t* chrs)")
+#endif // !NDEBUG
 	}
 
 	String::String(const _Char_t ch) :
 		_size(1u),
 		_chrs(new String::_Char_t[2]{ch, '\0'})
 	{
+#ifndef NDEBUG
+		PRINT("### String(const _Char_t ch)")
+#endif // !NDEBUG
 	}
 
 	String::String(const std::string& str) :
 		String(str.size())
 	{
 		copy_elems_from(str.c_str());
+
+#ifndef NDEBUG
+		PRINT("### String(const std::string& str)")
+#endif // !NDEBUG
 	}
 
 	String::String(const String& str) :
 		String(str.size())
 	{
 		copy_elems_from(str._chrs);
+
+#ifndef NDEBUG
+		PRINT("### String(const String& str)")
+#endif // !NDEBUG
 	}
 
 	String::String(String&& str) noexcept :
@@ -51,6 +78,10 @@ namespace Zymovets01_String
 	{
 		str._chrs = nullptr;
 		str._size = 0u;
+
+#ifndef NDEBUG
+		PRINT("### String(String&& str)")
+#endif // !NDEBUG
 	}
 
 	String::~String()
@@ -62,7 +93,7 @@ namespace Zymovets01_String
 	 
 	bool operator== (const String& a, const String& b) 
 	{
-		for (size_t i = 0u; i < a.size(); ++i)
+		for (String::_Size_t i = 0u; i < a.size(); ++i)
 		{
 			if (a[i] != b[i]) return false;
 		}
@@ -77,7 +108,7 @@ namespace Zymovets01_String
 
 	bool operator<	(const String& a, const String& b)
 	{
-		for (size_t i = 0; i < std::min(a.size(), b.size()); ++i)
+		for (String::_Size_t i = 0; i < std::min(a.size(), b.size()); ++i)
 		{
 			if (a[i] != b[i])
 			{
@@ -107,7 +138,7 @@ namespace Zymovets01_String
 	{
 		String res(a.size() + b.size());
 		
-		for (size_t i = 0u; i < res.size(); ++i)
+		for (String::_Size_t i = 0u; i < res.size(); ++i)
 		{
 			res[i] = i < a.size()
 				? a[i]

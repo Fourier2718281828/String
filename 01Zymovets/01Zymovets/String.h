@@ -1,7 +1,6 @@
 #ifndef _ZYMOVETS01_STRING_
 #define _ZYMOVETS01_STRING_
 #include <string>
-#include <iostream>
 
 /******************************************************************************
 *	Дати визначення власного класу String обробки 
@@ -30,12 +29,13 @@ namespace Zymovets01_String
 	class String
 	{
 	public:
-		using _Char_t = char;
+		using _Char_t  = char;
+		using _Size_t  = size_t;
 	private:
-		size_t		_size;
+		_Size_t		_size;
 		_Char_t*	_chrs;
 	private:
-		explicit String(const size_t size);
+		explicit String(const _Size_t size);
 		void copy_elems_from(const _Char_t* const);
 	public:
 		String();
@@ -46,17 +46,17 @@ namespace Zymovets01_String
 		String(String&&) noexcept;
 		~String();
 	public:
-		inline operator std::string() const;
+		inline explicit operator std::string() const;
 		inline explicit operator const _Char_t*() const;
 	public:
 		inline String& operator= (const String&) &;
-		inline String& operator= (String&&)			& noexcept;
-		inline String& operator+= (const String&)	& noexcept;
+		inline String& operator= (String&&)	& noexcept;
+		inline String& operator+= (const String&) &;
 	public:
-		inline const _Char_t& operator[] (const size_t i) const;
-		inline		 _Char_t& operator[] (const size_t i);
-		inline size_t size() const noexcept;
-		inline bool empty() const noexcept;
+		inline _Char_t  operator[] (const _Size_t i) const;
+		inline _Char_t& operator[] (const _Size_t i);
+		inline _Size_t size() const noexcept;
+		inline bool empty()   const noexcept;
 		inline void clear();
 	public:
 		class BadString;
@@ -76,17 +76,30 @@ namespace Zymovets01_String
 
 	class String::BadString
 	{
-	private:
-		const std::string _message;
 	public:
-		BadString(const std::string str) :
-			_message(str) {}
+		using string_t = std::string;
+	public:
+		enum class Type
+		{
+			IndexOutOfBounds,
+		};
+	private:
+		const string_t _message;
+		const Type        _type;
+	public:
+		BadString(const Type type, const string_t& str = "") :
+			_message(str), _type(type) {}
 
 		~BadString() = default;
 
-		inline std::string what() const noexcept
+		inline const string_t what() const noexcept
 		{
 			return _message;
+		}
+
+		inline Type type() const noexcept
+		{
+			return _type;
 		}
 	};
 
@@ -132,7 +145,7 @@ namespace Zymovets01_String
 		return *this;
 	}
 
-	inline String& String::operator+= (const String& str) & noexcept
+	inline String& String::operator+= (const String& str) &
 	{
 		return *this = *this + str;
 	}
@@ -147,21 +160,23 @@ namespace Zymovets01_String
 		I did not do that, as there has been no such a tendency within courses
 		by VV.
 	*/
-	inline const String::_Char_t& String::operator[] (const size_t i) const
+	inline String::_Char_t String::operator[] (const _Size_t i) const
 	{
+		using BS_Type = BadString::Type;
 		if (i >= size())
-			throw BadString("Index out of bounds: " + i);
+			throw BadString(BS_Type::IndexOutOfBounds, "Index out of bounds.");
 		return _chrs[i];
 	}
 
-	inline String::_Char_t& String::operator[] (const size_t i)
+	inline String::_Char_t& String::operator[] (const _Size_t i)
 	{
+		using BS_Type = BadString::Type;
 		if (i >= size())
-			throw BadString("Index out of bounds: " + i);
+			throw BadString(BS_Type::IndexOutOfBounds, "Index out of bounds.");
 		return _chrs[i];
 	}
 
-	inline size_t String::size() const noexcept
+	inline String::_Size_t String::size() const noexcept
 	{
 		return _size;
 	}
