@@ -21,6 +21,9 @@ int main(void)
 		String e(b);						cout << "Created : " << '\"' << e << '\"' << endl;
 		String f = std::move(a);			cout << "Created : " << '\"' << f << '\"' << endl;
 
+		cout << "Notice: String(nullptr) is forbidden by String(std::nullptr_t) = delete!" << endl;
+		//String(nullptr);
+
 		cout << endl;
 
 		cout << "Copy-Assignment :" << endl;

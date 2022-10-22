@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+//#define _CRT_SECURE_NO_WARNINGS
 #include "String.h"
 
 #ifndef NDEBUG
@@ -19,9 +19,9 @@ namespace Zymovets01_String
 		_chrs[size] = '\0';
 	}
 
-	void String::copy_elems_from(const String::_Char_t* const source)
+	void String::copy_elems_from(const String::_Char_t* const source, const String::_Size_t sz)
 	{
-		strcpy(_chrs, source);
+		strcpy_s(_chrs, sz + 1, source);
 	}
 
 	String::String() :
@@ -33,10 +33,10 @@ namespace Zymovets01_String
 #endif // !NDEBUG
 	}
 
-	String::String(const String::_Char_t* chrs) :
+	String::String(const String::_Char_t* const chrs) :
 		String(strlen(chrs))
 	{
-		copy_elems_from(chrs);
+		copy_elems_from(chrs, size());
 
 #ifndef NDEBUG
 		PRINT("### String(const String::_Char_t* chrs)")
@@ -55,7 +55,7 @@ namespace Zymovets01_String
 	String::String(const std::string& str) :
 		String(str.size())
 	{
-		copy_elems_from(str.c_str());
+		copy_elems_from(str.c_str(), size());
 
 #ifndef NDEBUG
 		PRINT("### String(const std::string& str)")
@@ -65,7 +65,7 @@ namespace Zymovets01_String
 	String::String(const String& str) :
 		String(str.size())
 	{
-		copy_elems_from(str._chrs);
+		copy_elems_from(str._chrs, size());
 
 #ifndef NDEBUG
 		PRINT("### String(const String& str)")
@@ -93,6 +93,8 @@ namespace Zymovets01_String
 	 
 	bool operator== (const String& a, const String& b) 
 	{
+		if (a.size() != b.size()) return false;
+
 		for (String::_Size_t i = 0u; i < a.size(); ++i)
 		{
 			if (a[i] != b[i]) return false;

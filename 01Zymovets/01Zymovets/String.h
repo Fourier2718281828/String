@@ -36,10 +36,11 @@ namespace Zymovets01_String
 		_Char_t*	_chrs;
 	private:
 		explicit String(const _Size_t size);
-		void copy_elems_from(const _Char_t* const);
+		void copy_elems_from(const _Char_t* const, const _Size_t);
 	public:
 		String();
-		String(const _Char_t*);
+		String(std::nullptr_t) = delete;
+		String(const _Char_t* const);
 		String(const _Char_t);
 		String(const std::string&);
 		String(const String&);
@@ -120,10 +121,10 @@ namespace Zymovets01_String
 			return *this;
 		}
 
+		_size = str.size();
 		delete[] _chrs;
 		_chrs = new _Char_t[str.size() + 1];
-		copy_elems_from(str._chrs);
-		_size = str.size();
+		copy_elems_from(str._chrs, size());
 
 		return *this;
 	}
