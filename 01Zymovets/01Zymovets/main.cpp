@@ -3,8 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-using std::cout;
-using std::endl;
+using _STD cout;
+using _STD endl;
 using namespace Zymovets01_String;
 
 
@@ -19,7 +19,7 @@ int main(void)
 		String c = 's';						cout << "Created : " << '\"' << c << '\"' << endl;
 		String d(std::string("string"));	cout << "Created : " << '\"' << d << '\"' << endl;
 		String e(b);						cout << "Created : " << '\"' << e << '\"' << endl;
-		String f = std::move(a);			cout << "Created : " << '\"' << f << '\"' << endl;
+		String f = _STD move(a);			cout << "Created : " << '\"' << f << '\"' << endl;
 
 		cout << "Notice: String(nullptr) is forbidden by String(std::nullptr_t) = delete!" << endl;
 		//String(nullptr);
@@ -29,12 +29,12 @@ int main(void)
 		cout << "Copy-Assignment :" << endl;
 		b = c;					cout << "Result : " << '\"' << b << '\"' << endl;
 		cout << "Move-Assignment :" << endl;
-		c = std::move(e);		cout << "Result : " << '\"' << c << '\"' << endl;
+		c = _STD move(e);		cout << "Result : " << '\"' << c << '\"' << endl;
 	}
 	//Converting operators :
 	cout << endl;
 	{
-		cout << "2. The converting operators are implemented explicit." << endl;
+		cout << "2. The converting operators are implemented to be explicit." << endl;
 		cout << "Creating Strings to convert : " << endl;
 		String a = "abc";
 		cout << "Created : " << '\"' << a << '\"' << endl;
@@ -71,6 +71,9 @@ int main(void)
 				break;
 			}
 		}
+
+		str[0] = 'B';
+		cout << "Assigning str[0] = 'B';  str = " << str << endl;
 	}
 
 	//Additional methods :
@@ -80,7 +83,7 @@ int main(void)
 		String str("some_str");
 		cout << "String created : " << '\"' << str << '\"' << endl;
 		cout << "str.size() = " << str.size() << endl;
-		cout << std::boolalpha << "str.empty() = " << str.empty() << endl;
+		cout << _STD boolalpha << "str.empty() = " << str.empty() << endl;
 		cout << "str.clear();" << endl;
 		str.clear();
 		cout << "str = " << '\"' << str  << '\"' << ", str.empty() = " << str.empty() << endl;
@@ -140,7 +143,7 @@ int main(void)
 	pringToSort();
 	cout << endl;
 	cout << "Now sort it using std::sort (some moves):" << endl;
-	std::sort(toSort.begin(), toSort.end(), std::less<String>());
+	_STD sort(toSort.begin(), toSort.end(), std::less<String>());
 	cout << endl;
 	pringToSort();
 }

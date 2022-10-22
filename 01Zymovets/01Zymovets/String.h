@@ -54,8 +54,8 @@ namespace Zymovets01_String
 		inline String& operator= (String&&)	& noexcept;
 		inline String& operator+= (const String&) &;
 	public:
-		inline _Char_t  operator[] (const _Size_t i) const;
-		inline _Char_t& operator[] (const _Size_t i);
+		inline _Char_t  operator[] (const _Size_t) const;
+		inline _Char_t& operator[] (const _Size_t);
 		inline _Size_t size() const noexcept;
 		inline bool empty()   const noexcept;
 		inline void clear();
@@ -83,6 +83,7 @@ namespace Zymovets01_String
 		enum class Type
 		{
 			IndexOutOfBounds,
+			NonTerminatedStringInput,
 		};
 	private:
 		const string_t _message;
@@ -124,7 +125,7 @@ namespace Zymovets01_String
 		_size = str.size();
 		delete[] _chrs;
 		_chrs = new _Char_t[str.size() + 1];
-		copy_elems_from(str._chrs, size());
+		copy_elems_from(str._chrs, str.size() + 1);
 
 		return *this;
 	}

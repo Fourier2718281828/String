@@ -1,4 +1,3 @@
-//#define _CRT_SECURE_NO_WARNINGS
 #include "String.h"
 
 #ifndef NDEBUG
@@ -12,7 +11,7 @@ _STD cout << s << _STD endl;
 
 namespace Zymovets01_String
 {
-	String::String(const size_t size) :
+	String::String(const _Size_t size) :
 		_size(size),
 		_chrs(new String::_Char_t[size + 1])
 	{
@@ -21,7 +20,10 @@ namespace Zymovets01_String
 
 	void String::copy_elems_from(const String::_Char_t* const source, const String::_Size_t sz)
 	{
-		strcpy_s(_chrs, sz + 1, source);
+		using BS_t = BadString::Type;
+		if (source[sz - 1] != '\0')
+			throw BadString(BS_t::NonTerminatedStringInput, "Cannot copy a non-terminated string.");
+		strcpy_s(_chrs, sz, source);
 	}
 
 	String::String() :
@@ -36,7 +38,7 @@ namespace Zymovets01_String
 	String::String(const String::_Char_t* const chrs) :
 		String(strlen(chrs))
 	{
-		copy_elems_from(chrs, size());
+		copy_elems_from(chrs, size() + 1);
 
 #ifndef NDEBUG
 		PRINT("### String(const String::_Char_t* chrs)")
@@ -55,7 +57,7 @@ namespace Zymovets01_String
 	String::String(const std::string& str) :
 		String(str.size())
 	{
-		copy_elems_from(str.c_str(), size());
+		copy_elems_from(str.c_str(), size() + 1);
 
 #ifndef NDEBUG
 		PRINT("### String(const std::string& str)")
@@ -65,7 +67,7 @@ namespace Zymovets01_String
 	String::String(const String& str) :
 		String(str.size())
 	{
-		copy_elems_from(str._chrs, size());
+		copy_elems_from(str._chrs, str.size() + 1);
 
 #ifndef NDEBUG
 		PRINT("### String(const String& str)")
